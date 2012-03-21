@@ -12,6 +12,7 @@ set ts=2
 set sw=2
 set tw=0
 set wm=0
+set expandtab
 
 " Set 'formatoptions' to break comment lines but not other lines,
 " and insert the comment leader when hitting <CR> or using "o".
