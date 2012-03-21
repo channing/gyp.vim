@@ -24,3 +24,23 @@ setlocal commentstring=#%s
 
 let b:undo_ftplugin = "setl fo< ofu< com< cms<" 
 
+
+map <leader>c :call CreateFileFromGyp()<CR>
+
+function! CreateFileFromGyp()
+python << EOF
+
+import vim, re, os
+lines = vim.current.range
+for line in lines:
+    m = re.search("['\"](\S*)['\"],",line)
+    if m:
+	path = vim.eval('fnamemodify("' + m.group(1) + '", ":p")')
+	if not os.path.exists(path):
+	    f = open(path, 'w')
+	    f.close()
+	    print "Create file: " + path
+
+EOF
+endfunction
+
