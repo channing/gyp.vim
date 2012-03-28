@@ -1,7 +1,8 @@
 " Vim filetype plugin file
 " Language:     Gyp
-" Maintainer:   Kelan Champagne  (http://yeahrightkeller.com)
-" URL:          https://github.com/kelan/gyp.vim
+" Maintainer:   Channing Dai (http://www.listary.com)
+" URL:          https://github.com/ChanningDai/gyp.vim
+" Original Maintainer:   Kelan Champagne  (http://yeahrightkeller.com)
 
 if exists("b:did_ftplugin")
   finish
