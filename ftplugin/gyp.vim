@@ -30,6 +30,7 @@ let b:undo_ftplugin = "setl fo< ofu< com< cms<"
 map <leader>c :call CreateFileFromGyp()<CR>
 map <leader>a :call AddFilesBasedOnCurrentLine()<CR>
 map <leader>s :call SortList()<CR>
+map <leader>r :call RenameFiles()<CR>
 
 function! CreateFileFromGyp()
 python << EOF
@@ -64,5 +65,39 @@ import vim
 start_line = int(vim.eval('search("[", "nb")')) + 1
 end_line = int(vim.eval('search("]", "n")')) - 1
 vim.command("%d,%dsort" % (start_line, end_line))
+EOF
+endfunction
+
+function! RenameFiles()
+python << EOF
+import vim, re, os
+def python_input(message = 'input'):
+  vim.command('call inputsave()')
+  vim.command("let user_input = input('" + message + ": ')")
+  vim.command('call inputrestore()')
+  return vim.eval('user_input')
+
+def GetPathFromLine(line):
+    m = re.search("['\"](\S*)['\"],",line)
+    if m:
+	return vim.eval('fnamemodify("' + m.group(1) + '", ":p")')
+
+def RenameLine(line_num, pattern, replace_with):
+#print "replace %s with %s" % (pattern, replace_with)
+    b = vim.current.buffer
+    if pattern not in b[line_num-1]:
+	return
+    old_path = GetPathFromLine(b[line_num-1])
+    b[line_num-1] = b[line_num-1].replace(pattern, replace_with)
+    new_path = GetPathFromLine(b[line_num-1])
+    os.rename(old_path, new_path)
+    print "Rename %s to %s" % (old_path, new_path)
+
+line_num = int(vim.eval('line(".")'))
+m = re.search("['\"](\S*)['\"],", vim.current.line)
+pattern = m.group(1).rpartition(".")[0]
+replace_with = python_input("New file name")
+RenameLine(line_num, pattern, replace_with)
+RenameLine(line_num + 1, pattern, replace_with)
 EOF
 endfunction
