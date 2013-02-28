@@ -27,12 +27,12 @@ setlocal commentstring=#%s
 let b:undo_ftplugin = "setl fo< ofu< com< cms<" 
 
 
-map <leader>c :call CreateFileFromGyp()<CR>
-map <leader>a :call AddFilesBasedOnCurrentLine()<CR>
-map <leader>s :call SortList()<CR>
-map <leader>r :call RenameFiles()<CR>
+map <leader>gyc :call GypCreateFileFromGyp()<CR>
+map <leader>gya :call GypAddFilesBasedOnCurrentLine()<CR>
+map <leader>gys :call GypSortList()<CR>
+map <leader>gyr :call GypRenameFiles()<CR>
 
-function! CreateFileFromGyp()
+function! GypCreateFileFromGyp()
 python << EOF
 import vim, re, os
 lines = vim.current.range
@@ -48,7 +48,7 @@ for line in lines:
 EOF
 endfunction
 
-function! AddFilesBasedOnCurrentLine()
+function! GypAddFilesBasedOnCurrentLine()
 python << EOF
 import vim
 b = vim.current.buffer
@@ -59,7 +59,7 @@ vim.command('normal 2==')
 EOF
 endfunction
 
-function! SortList()
+function! GypSortList()
 python << EOF
 import vim
 start_line = int(vim.eval('search("[", "nb")')) + 1
@@ -68,7 +68,7 @@ vim.command("%d,%dsort" % (start_line, end_line))
 EOF
 endfunction
 
-function! RenameFiles()
+function! GypRenameFiles()
 python << EOF
 import vim, re, os
 def python_input(message = 'input'):
