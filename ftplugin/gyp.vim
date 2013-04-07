@@ -35,6 +35,8 @@ map <leader>gyr :call GypRenameFiles()<CR>
 function! GypCreateFileFromGyp()
 python << EOF
 import vim, re, os
+vim.command('cd %:p:h')
+
 lines = vim.current.range
 for line in lines:
     m = re.search("['\"](\S*)['\"],",line)
@@ -71,6 +73,9 @@ endfunction
 function! GypRenameFiles()
 python << EOF
 import vim, re, os
+
+vim.command('cd %:p:h')
+
 def python_input(message = 'input'):
   vim.command('call inputsave()')
   vim.command("let user_input = input('" + message + ": ')")
